@@ -21,16 +21,18 @@ RCT_EXPORT_METHOD(convertMovToMp4: (NSString*)filename
 
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
 
-    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetHighestQuality];
+    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPreset1920x1080];
 
     NSString * resultPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@.mp4", outputPath];
 
     exportSession.outputURL = [NSURL fileURLWithPath:resultPath];
-
+    exportSession.metadata = nil;
+    
     //set the output file format if you want to make it in other file format (ex .3gp)
     exportSession.outputFileType = AVFileTypeMPEG4;
     exportSession.shouldOptimizeForNetworkUse = YES;
-
+    exportSession.canPerformMultiplePassesOverSourceMediaData = YES;
+    
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         switch ([exportSession status])
         {
